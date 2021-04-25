@@ -18,6 +18,16 @@
                 <servlet-name>Jersey Web Application</servlet-name>
                 <url-pattern>/PaymentService/*</url-pattern>
         </servlet-mapping>
+		
+	<servlet-mapping>
+		<servlet-name>Jersey Web Application</servlet-name>
+		<url-pattern>/UserLogin/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Jersey Web Application</servlet-name>
+		<url-pattern>/ReceiverLogin/*</url-pattern>
+	</servlet-mapping>
 
 
 

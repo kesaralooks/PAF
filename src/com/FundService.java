@@ -17,7 +17,7 @@ import org.jsoup.nodes.Document;
 public class FundService {
 	
 	Fund fundObj = new Fund(); 
-	
+	//get details
 	@GET
 	@Path("/") 
 	@Produces(MediaType.TEXT_HTML) 

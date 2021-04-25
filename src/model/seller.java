@@ -6,21 +6,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class Receiver {
+public class seller {
+
 	private Connection connect() {
 		Connection con = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 
-			// Provide the correct details: DBServer/DBName, username, password
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/receiverdb", "root", "");
+			// Provide the correct details: DBServer/DBName, userName, password
+			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/pafdb", "root", "");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return con;
 	}
 
-	public String insertReceiver(String receiverEmail, String receiverName, String receiverAdd, String receiverCont) {
+	public String insertseller( String sellerName, String sellerAdd, String Email, String sellerCont)
+	{
 		String output = "";
 		try {
 			Connection con = connect();
@@ -28,28 +30,28 @@ public class Receiver {
 				return "Error while connecting to the database for inserting.";
 			}
 			// create a prepared statement
-			String query = " insert into receiverdb(`receiverID`,`receiverEmail`,`receiverName`,`receiverAdd`,`receiverCont`)"
+			String query = " insert into seller(`sellerID`,`Name`,`Address`,`Email, `Contact_No`)"
 					+ " values (?, ?, ?, ?, ?)";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
-			preparedStmt.setInt(1,0);
-			preparedStmt.setString(2, receiverEmail);
-			preparedStmt.setString(3, receiverName);
-			preparedStmt.setDouble(4, Double.parseDouble(receiverAdd));
-			preparedStmt.setString(5, receiverCont);
+			preparedStmt.setInt(1, 0);
+			preparedStmt.setString(2, sellerName);
+			preparedStmt.setDouble(3, Double.parseDouble(sellerAdd));
+			preparedStmt.setString(4, Email);
+			preparedStmt.setString(5, sellerCont);
 			// execute the statement
 
 			preparedStmt.execute();
 			con.close();
 			output = "Inserted successfully";
 		} catch (Exception e) {
-			output = "Error while inserting the receiver.";
+			output = "Error while inserting the user.";
 			System.err.println(e.getMessage());
 		}
 		return output;
 	}
 
-	public String readReceiver() {
+	public String readseller() {
 		String output = "";
 		try {
 			Connection con = connect();
@@ -58,44 +60,44 @@ public class Receiver {
 			}
 			// Prepare the HTML table to be displayed
 
-			output = "<table border='1'><tr><th>receiverID</th><th>receiverEmail</th><th>receiverName</th>" + "<th>receiverAdd</th>"
-					+ "<th>receiverCont</th>" + "<th>Update</th><th>Remove</th></tr>";
+			output = "<table border='1'><tr><th>sellerID</th><th>sellerName</th><th>address</th>" + "<th>email</th>"
+					+ "<th>Contact_No</th>" + "<th>Update</th><th>Remove</th></tr>";
 
-			String query = "select * from receiverdb";
+			String query = "select * from seller";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			
+
 			// iterate through the rows in the result set
 			while (rs.next()) {
-				String receiverID = Integer.toString(rs.getInt("receiverID"));
-				String receiverEmail = rs.getString("receiverEmail");
-				String receiverName = rs.getString("receiverName");
-				String receiverAdd = Double.toString(rs.getDouble("receiverAdd"));
-				String receiverCont = rs.getString("receiverCont");
-				
+				String sellerID = Integer.toString(rs.getInt("sellerID"));
+				String sellerName = rs.getString("sellerName");
+				String sellerAdd = Double.toString(rs.getDouble("sellerAdd"));
+				String Email = rs.getString("Email");
+				String sellerCont = rs.getString("sellerCont");
+
 				// Add into the HTML table
-				output += "<tr><td>" + receiverID + "</td>";
-				output += "<td>" + receiverEmail + "</td>";
-				output += "<td>" + receiverName + "</td>";
-				output += "<td>" + receiverAdd + "</td>";
-				output += "<td>" + receiverCont + "</td>";
+				output += "<tr><td>" + sellerID + "</td>";
+				output += "<td>" + sellerName + "</td>";
+				output += "<td>" + sellerAdd + "</td>";
+				output += "<td>" + Email + "</td>";
+				output += "<td>" + sellerCont + "</td>";
 				// buttons
 				output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>"
 						+ "<td><form method='post' action='items.jsp'>"
 						+ "<input name='btnRemove' type='submit' value='Remove'  class='btn btn-danger'>"
-						+ "<input name='receiverID' type='hidden' value='" + receiverID + "'>" + "</form></td></tr>";
+						+ "<input name='sellerID' type='hidden' value='" + sellerID + "'>" + "</form></td></tr>";
 			}
 			con.close();
 			// Complete the HTML table
 			output += "</table>";
 		} catch (Exception e) {
-			output = "Error while reading the receiver.";
+			output = "Error while reading the items.";
 			System.err.println(e.getMessage());
 		}
 		return output;
 	}
 
-	public String updateReceiver(String receiverID, String receiverEmail, String receiverName, String receiverAdd, String receiverCont)
+	public String updateseller(String sellerID, String sellerName, String sellerAdd, String Email, String sellerCont)
 
 	{
 		String output = "";
@@ -105,26 +107,26 @@ public class Receiver {
 				return "Error while connecting to the database for updating.";
 			}
 			// create a prepared statement
-			String query = "UPDATE receiverdb SET receiverEmail=?,receiverName=?,receiverAdd=?,receiverCont=? WHERE receiverID=?";
+			String query = "UPDATE seller SET sellerName=?,sellerAdd=?,Email=?,sellerCont=? WHERE sellerID=?";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
-			preparedStmt.setString(1, receiverEmail);
-			preparedStmt.setString(2, receiverName);
-			preparedStmt.setDouble(3, Double.parseDouble(receiverAdd));
-			preparedStmt.setString(4, receiverCont);
-			preparedStmt.setInt(5, Integer.parseInt(receiverID));
+			preparedStmt.setString(1, sellerName);
+			preparedStmt.setDouble(2, Double.parseDouble(sellerAdd));
+			preparedStmt.setString(3, Email);
+			preparedStmt.setString(4, sellerCont);
+			preparedStmt.setInt(5, Integer.parseInt(sellerID));
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
 			output = "Updated successfully";
 		} catch (Exception e) {
-			output = "Error while updating the receiver.";
+			output = "Error while updating the User.";
 			System.err.println(e.getMessage());
 		}
 		return output;
 	}
 
-	public String deleteReceiver(String receiverID) {
+	public String deleteUser(String sellerID) {
 		String output = "";
 		try {
 			Connection con = connect();
@@ -132,16 +134,16 @@ public class Receiver {
 				return "Error while connecting to the database for deleting.";
 			}
 			// create a prepared statement
-			String query = "delete from receiverdb where receiverID=?";
+			String query = "delete from seller where sellerID=?";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
-			preparedStmt.setInt(1, Integer.parseInt(receiverID));
+			preparedStmt.setInt(1, Integer.parseInt(sellerID));
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
 			output = "Deleted successfully";
 		} catch (Exception e) {
-			output = "Error while deleting the receiver.";
+			output = "Error while deleting the user.";
 			System.err.println(e.getMessage());
 		}
 		return output;
